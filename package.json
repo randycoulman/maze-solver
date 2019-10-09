@@ -1,0 +1,31 @@
+{
+  "name": "maze-solver",
+  "version": "0.1.0",
+  "description": "A maze solver",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "format": "prettier --write \"**/*.{js,json,md,ts,tsx}\"",
+    "test": "jest",
+    "test:watch": "npm test -- --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/randycoulman/maze-solver.git"
+  },
+  "author": "Randy Coulman <randy@randycoulman.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/randycoulman/maze-solver/issues"
+  },
+  "homepage": "https://github.com/randycoulman/maze-solver#readme",
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.12",
+    "jest": "^24.9.0",
+    "prettier": "^1.18.2",
+    "ts-jest": "^24.1.0",
+    "typescript": "^3.6.3"
+  }
+}

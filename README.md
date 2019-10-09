@@ -1,6 +1,6 @@
 # maze-solver
 
-A maze solver.  This is a practice project for me to start learning TypeScript.
+A maze solver. This is a practice project for me to start learning TypeScript.
 
 ## Background
 
