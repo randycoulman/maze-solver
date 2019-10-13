@@ -1,6 +1,7 @@
+import * as CellContents from "../cellContents";
 import * as Maze from "../maze";
 
-const { CellType } = Maze;
+import Contents = CellContents.Type;
 
 describe("maze", () => {
   describe("indexing", () => {
@@ -19,25 +20,25 @@ describe("maze", () => {
     it("has walls", () => {
       const cell = Maze.cellAt(0, 0, maze!);
 
-      expect(cell).toBe(CellType.Wall);
+      expect(cell).toBe(Contents.Wall);
     });
 
     it("has halls", () => {
       const cell = Maze.cellAt(2, 1, maze!);
 
-      expect(cell).toBe(CellType.Hall);
+      expect(cell).toBe(Contents.Hall);
     });
 
     it("has a start point", () => {
       const cell = Maze.cellAt(1, 1, maze!);
 
-      expect(cell).toBe(CellType.Start);
+      expect(cell).toBe(Contents.Start);
     });
 
     it("has an end point", () => {
       const cell = Maze.cellAt(3, 1, maze!);
 
-      expect(cell).toBe(CellType.End);
+      expect(cell).toBe(Contents.End);
     });
 
     it("returns undefined for off-grid cell indexes", () => {

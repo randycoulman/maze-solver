@@ -1,27 +1,13 @@
-export enum CellType {
-  End = "B",
-  Hall = " ",
-  Wall = "#",
-  Start = "A",
-}
+import * as CellContents from "./cellContents";
 
-type Maze = CellType[][];
-
-const parseCellType = (s: string): CellType => {
-  type CellTypeKey = keyof typeof CellType;
-  const key = Object.keys(CellType).find(k => CellType[k as CellTypeKey] === s);
-
-  if (!key) throw new Error(`Invalid cell symbol: ${s}`);
-
-  return CellType[key as CellTypeKey];
-};
+type Maze = CellContents.Type[][];
 
 export const parse = (description: string): Maze =>
   description
     .split("\n")
     .map(s => s.trim())
     .filter(s => s !== "")
-    .map(s => s.split("").map(s => parseCellType(s)));
+    .map(s => s.split("").map(s => CellContents.parse(s)));
 
 export const isSolvable = (_maze: Maze): boolean => true;
 
@@ -31,6 +17,6 @@ export const cellAt = (
   x: number,
   y: number,
   maze: Maze
-): CellType | undefined => maze[y] && maze[y][x];
+): CellContents.Type | undefined => maze[y] && maze[y][x];
 
 export type Type = Maze;
