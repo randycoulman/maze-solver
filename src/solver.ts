@@ -18,7 +18,7 @@ import {
   __,
 } from "ramda";
 
-import * as CellContents from "./cellContents";
+import * as Cell from "./cell";
 import * as Maze from "./maze";
 
 type Path = Array<Maze.Coordinate>;
@@ -27,7 +27,7 @@ export const solution = (maze: Maze.Type): Path => {
   const canVisit = ([x, y]: Maze.Coordinate): boolean => {
     const cell = Maze.cellAt(x, y, maze);
 
-    if (isNil(cell) || cell == CellContents.Type.Wall) return false;
+    if (isNil(cell) || Cell.isWall(cell)) return false;
 
     return true;
   };
@@ -38,7 +38,7 @@ export const solution = (maze: Maze.Type): Path => {
     const path = head(paths);
     const [x, y] = last(path);
 
-    if (Maze.cellAt(x, y, maze) === CellContents.Type.End) {
+    if (Cell.isEnd(Maze.cellAt(x, y, maze))) {
       return path;
     }
 

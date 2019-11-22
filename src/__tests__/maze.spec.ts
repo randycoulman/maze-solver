@@ -1,7 +1,5 @@
-import * as CellContents from "../cellContents";
+import * as Cell from "../cell";
 import * as Maze from "../maze";
-
-import Contents = CellContents.Type;
 
 describe("maze", () => {
   describe("indexing", () => {
@@ -20,25 +18,25 @@ describe("maze", () => {
     it("has walls", () => {
       const cell = Maze.cellAt(0, 0, maze!);
 
-      expect(cell).toBe(Contents.Wall);
+      expect(Cell.isWall(cell)).toBe(true);
     });
 
     it("has halls", () => {
       const cell = Maze.cellAt(2, 1, maze!);
 
-      expect(cell).toBe(Contents.Hall);
+      expect(Cell.isHall(cell)).toBe(true);
     });
 
     it("has a start point", () => {
       const cell = Maze.cellAt(1, 1, maze!);
 
-      expect(cell).toBe(Contents.Start);
+      expect(Cell.isStart(cell)).toBe(true);
     });
 
     it("has an end point", () => {
       const cell = Maze.cellAt(3, 1, maze!);
 
-      expect(cell).toBe(Contents.End);
+      expect(Cell.isEnd(cell)).toBe(true);
     });
 
     it("knows its start point", () => {

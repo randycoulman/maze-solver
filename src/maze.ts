@@ -1,8 +1,8 @@
 import { curry, isEmpty, map, path, pipe, reject, split, trim } from "ramda";
 
-import * as CellContents from "./cellContents";
+import * as Cell from "./cell";
 
-type Row = Array<CellContents.Type>;
+type Row = Array<Cell.Type>;
 type Maze = Array<Row>;
 
 export type Coordinate = [number, number];
@@ -11,7 +11,7 @@ const parseRow = (row: string): Row =>
   pipe(
     trim,
     split(""),
-    map(CellContents.parse)
+    map(Cell.parse)
   )(row);
 
 export const parse = (description: string): Maze =>
@@ -22,7 +22,7 @@ export const parse = (description: string): Maze =>
   )(description);
 
 export const cellAt = curry((x: number, y: number, maze: Maze):
-  | CellContents.Type
+  | Cell.Type
   | undefined => path([y, x], maze));
 
 export const neighbors = curry(
@@ -37,7 +37,7 @@ export const neighbors = curry(
 export const startingCell = (maze: Maze): Coordinate => {
   let x: number | undefined;
   const y = maze.findIndex(row => {
-    x = row.findIndex(cell => cell === CellContents.Type.Start);
+    x = row.findIndex(Cell.isStart);
     return x !== -1;
   });
 
