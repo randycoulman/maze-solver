@@ -121,3 +121,21 @@ export const parse = (token: string): CellContents => {
   return CellContents[key as Key];
 };
 ```
+
+## Ramda
+
+Ramda is working better than I expected, but I still ran into a few issues.
+
+The one I remember most is that I wanted to write:
+
+```ts
+const nextPaths = map(append(__, path), neighbors);
+```
+
+but was forced to write:
+
+```ts
+const nextPaths = map(n => append(n, path), neighbors);
+```
+
+in order to get it to typecheck.

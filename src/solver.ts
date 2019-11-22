@@ -1,4 +1,5 @@
 import {
+  append,
   both,
   complement,
   concat,
@@ -49,7 +50,7 @@ export const solution = (maze: Maze.Type): Path => {
       filter(both(canVisit, complement(alreadyVisited)))
     )(maze);
 
-    const nextPaths = map(neighbor => [...path, neighbor], neighbors);
+    const nextPaths = map(n => append(n, path), neighbors);
 
     paths = pipe(
       tail,
