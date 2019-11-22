@@ -41,6 +41,18 @@ describe("maze", () => {
       expect(cell).toBe(Contents.End);
     });
 
+    it("knows its start point", () => {
+      const start = Maze.startingCell(maze!);
+
+      expect(start).toEqual([1, 1]);
+    });
+
+    it("finds neighbors of a cell", () => {
+      const neighbors = Maze.neighbors(2, 1, maze!);
+
+      expect(neighbors).toEqual([[1, 1], [3, 1], [2, 0], [2, 2]]);
+    });
+
     it("returns undefined for off-grid cell indexes", () => {
       expect(Maze.cellAt(-1, -1, maze!)).toBeUndefined();
       expect(Maze.cellAt(2, 3, maze!)).toBeUndefined();
