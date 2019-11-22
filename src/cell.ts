@@ -1,6 +1,6 @@
-import { find, keys, pipe, propEq } from "ramda";
+import { complement, either, find, isNil, keys, pipe, propEq } from "ramda";
 
-enum Contents {
+export enum Contents {
   End = "B",
   Hall = " ",
   Wall = "#",
@@ -33,5 +33,7 @@ export const isEnd = contains(Contents.End);
 export const isHall = contains(Contents.Hall);
 export const isStart = contains(Contents.Start);
 export const isWall = contains(Contents.Wall);
+
+export const isTraversable = complement(either(isNil, isWall));
 
 export type Type = Cell;

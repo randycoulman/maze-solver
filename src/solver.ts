@@ -8,7 +8,6 @@ import {
   head,
   includes,
   isEmpty,
-  isNil,
   last,
   length,
   map,
@@ -27,9 +26,7 @@ export const solution = (maze: Maze.Type): Path => {
   const canVisit = ([x, y]: Maze.Coordinate): boolean => {
     const cell = Maze.cellAt(x, y, maze);
 
-    if (isNil(cell) || Cell.isWall(cell)) return false;
-
-    return true;
+    return Cell.isTraversable(cell);
   };
 
   let paths = [[Maze.startingCell(maze)]];
