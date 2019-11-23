@@ -1,44 +1,38 @@
 import {
-  append,
   both,
   complement,
   concat,
-  dec,
   filter,
   head,
-  includes,
   isEmpty,
-  last,
-  length,
   map,
-  max,
   pipe,
   tail,
   __,
 } from "ramda";
-
 import * as Cell from "./cell";
 import * as Maze from "./maze";
+import * as Path from "./path";
 
-type Path = Array<Cell.Type>;
-
-export const solution = (maze: Maze.Type): Path => {
-  let paths = [[Maze.startingCell(maze)]];
+export const solution = (maze: Maze.Type): Path.Type => {
+  const startingCell = Maze.startingCell(maze);
+  let paths = [Path.make(startingCell)];
 
   while (!isEmpty(paths)) {
     const path = head(paths);
-    const cell = last(path);
 
-    if (Cell.isEnd(cell)) return path;
+    if (Path.isComplete(path)) return path;
 
-    const alreadyVisited = (cell: Cell.Type): boolean => includes(cell, path);
+    const alreadyVisited = (cell: Cell.Type): boolean =>
+      Path.hasVisited(cell, path);
 
+    const cell = Path.currentCell(path);
     const neighbors = pipe(
       Maze.neighbors(cell),
       filter(both(Cell.isTraversable, complement(alreadyVisited)))
     )(maze);
 
-    const nextPaths = map(n => append(n, path), neighbors);
+    const nextPaths = map(n => Path.visit(n, path), neighbors);
 
     paths = pipe(
       tail,
@@ -51,12 +45,10 @@ export const solution = (maze: Maze.Type): Path => {
 
 export const isSolvable = pipe(
   solution,
-  complement(isEmpty)
+  Path.isComplete
 );
 
 export const steps = pipe(
   solution,
-  length,
-  dec,
-  max(0 as number)
+  Path.stepCount
 );
