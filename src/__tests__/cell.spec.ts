@@ -69,4 +69,13 @@ describe("cell contents", () => {
       expect(Cell.isTraversable(cell)).toBe(true);
     });
   });
+
+  describe("neighbor locations", () => {
+    it("knows its neighbor locations", () => {
+      const cell = Cell.make(3, 4, Cell.Contents.Hall);
+      const locations = Cell.neighborLocations(cell);
+
+      expect(locations).toEqual([[2, 4], [4, 4], [3, 3], [3, 5]]);
+    });
+  });
 });

@@ -40,4 +40,10 @@ export const isWall = contains(Contents.Wall);
 
 export const isTraversable = complement(either(isNil, isWall));
 
+export const neighborLocations = (cell: Cell): Array<Location> => {
+  const [x, y] = cell.location;
+
+  return [[x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]];
+};
+
 export type Type = Cell;

@@ -42,13 +42,12 @@ export const cellAt = curry((x: number, y: number, maze: Maze):
   | undefined => find(cell => equals(cell.location, [x, y]), maze));
 
 export const neighbors = curry(
-  (cell: Cell.Type, maze: Maze): Array<Cell.Type> => {
-    const [x, y] = cell.location;
-    const neighborLocations = [[x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]];
-    const neighbors = map(([x, y]) => cellAt(x, y, maze), neighborLocations);
-
-    return reject(isNil, neighbors) as Array<Cell.Type>;
-  }
+  (cell: Cell.Type, maze: Maze): Array<Cell.Type> =>
+    pipe(
+      Cell.neighborLocations,
+      map(([x, y]) => cellAt(x, y, maze)),
+      reject(isNil)
+    )(cell) as Array<Cell.Type>
 );
 
 export const startingCell = (maze: Maze): Cell.Type => {
