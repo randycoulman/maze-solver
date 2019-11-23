@@ -1,3 +1,5 @@
+import { pluck } from "ramda";
+
 import * as Maze from "../maze";
 import * as Solver from "../solver";
 
@@ -9,7 +11,9 @@ describe("solver", () => {
       #####
     `);
 
-    expect(Solver.solution(maze)).toEqual([]);
+    const solution = Solver.solution(maze);
+
+    expect(pluck("location", solution)).toEqual([]);
   });
 
   it("solves a single-step maze", () => {
@@ -18,8 +22,9 @@ describe("solver", () => {
       #AB#
       ####
     `);
+    const solution = Solver.solution(maze);
 
-    expect(Solver.solution(maze)).toEqual([[1, 1], [2, 1]]);
+    expect(pluck("location", solution)).toEqual([[1, 1], [2, 1]]);
   });
 
   it("solves a simple multi-step maze", () => {
@@ -29,7 +34,9 @@ describe("solver", () => {
       #####
     `);
 
-    expect(Solver.solution(maze)).toEqual([[1, 1], [2, 1], [3, 1]]);
+    const solution = Solver.solution(maze);
+
+    expect(pluck("location", solution)).toEqual([[1, 1], [2, 1], [3, 1]]);
   });
 
   it("finds the shortest path", () => {
@@ -41,6 +48,8 @@ describe("solver", () => {
       ######
     `);
 
-    expect(Solver.solution(maze)).toEqual([[2, 3], [3, 3]]);
+    const solution = Solver.solution(maze);
+
+    expect(pluck("location", solution)).toEqual([[2, 3], [3, 3]]);
   });
 });

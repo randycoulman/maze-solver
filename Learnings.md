@@ -139,3 +139,5 @@ const nextPaths = map(n => append(n, path), neighbors);
 ```
 
 in order to get it to typecheck.
+
+I also was unable to figure out how to use `addIndex(map)`.

@@ -7,15 +7,19 @@ export enum Contents {
   Start = "A",
 }
 
+export type Location = [number, number];
+
 interface Cell {
   contents: Contents;
+  location: Location;
 }
 
-export const make = (contents: Contents): Cell => ({
+export const make = (x: number, y: number, contents: Contents): Cell => ({
   contents,
+  location: [x, y],
 });
 
-export const parse = (token: string): Cell => {
+export const parse = (x: number, y: number, token: string): Cell => {
   type Key = keyof typeof Contents;
   const key = pipe(
     keys,
@@ -24,7 +28,7 @@ export const parse = (token: string): Cell => {
 
   if (!key) throw new Error(`Invalid cell token: ${token}`);
 
-  return make(Contents[key as Key]);
+  return make(x, y, Contents[key as Key]);
 };
 
 const contains = propEq("contents");

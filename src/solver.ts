@@ -20,31 +20,22 @@ import {
 import * as Cell from "./cell";
 import * as Maze from "./maze";
 
-type Path = Array<Maze.Coordinate>;
+type Path = Array<Cell.Type>;
 
 export const solution = (maze: Maze.Type): Path => {
-  const canVisit = ([x, y]: Maze.Coordinate): boolean => {
-    const cell = Maze.cellAt(x, y, maze);
-
-    return Cell.isTraversable(cell);
-  };
-
   let paths = [[Maze.startingCell(maze)]];
 
   while (!isEmpty(paths)) {
     const path = head(paths);
-    const [x, y] = last(path);
+    const cell = last(path);
 
-    if (Cell.isEnd(Maze.cellAt(x, y, maze))) {
-      return path;
-    }
+    if (Cell.isEnd(cell)) return path;
 
-    const alreadyVisited = (location: Maze.Coordinate): boolean =>
-      includes(location, path);
+    const alreadyVisited = (cell: Cell.Type): boolean => includes(cell, path);
 
     const neighbors = pipe(
-      Maze.neighbors(x, y),
-      filter(both(canVisit, complement(alreadyVisited)))
+      Maze.neighbors(cell),
+      filter(both(Cell.isTraversable, complement(alreadyVisited)))
     )(maze);
 
     const nextPaths = map(n => append(n, path), neighbors);

@@ -1,50 +1,64 @@
-import { curry, isEmpty, map, path, pipe, reject, split, trim } from "ramda";
+import {
+  curry,
+  equals,
+  find,
+  flatten,
+  isEmpty,
+  isNil,
+  map,
+  pipe,
+  reject,
+  split,
+  trim,
+  __,
+} from "ramda";
 
 import * as Cell from "./cell";
 
 type Row = Array<Cell.Type>;
-type Maze = Array<Row>;
+type Maze = Array<Cell.Type>;
 
-export type Coordinate = [number, number];
-
-const parseRow = (row: string): Row =>
-  pipe(
+const parseRow = (y: number, row: string): Row => {
+  const tokens = pipe(
     trim,
-    split(""),
-    map(Cell.parse)
+    split("")
   )(row);
 
-export const parse = (description: string): Maze =>
-  pipe(
+  return tokens.map((token, x) => Cell.parse(x, y, token));
+};
+
+export const parse = (description: string): Maze => {
+  const tokenRows = pipe(
     split("\n"),
-    map(parseRow),
     reject(isEmpty)
   )(description);
+  const rows = tokenRows.map((row, y) => parseRow(y, row));
+
+  return flatten(rows);
+};
 
 export const cellAt = curry((x: number, y: number, maze: Maze):
   | Cell.Type
-  | undefined => path([y, x], maze));
+  | undefined => find(cell => equals(cell.location, [x, y]), maze));
 
 export const neighbors = curry(
-  (x: number, y: number, _maze: Maze): Array<Coordinate> => [
-    [x - 1, y],
-    [x + 1, y],
-    [x, y - 1],
-    [x, y + 1],
-  ]
+  (cell: Cell.Type, maze: Maze): Array<Cell.Type> => {
+    const [x, y] = cell.location;
+    const neighborLocations = [[x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]];
+    const neighbors = map(([x, y]) => cellAt(x, y, maze), neighborLocations);
+
+    return reject(isNil, neighbors) as Array<Cell.Type>;
+  }
 );
 
-export const startingCell = (maze: Maze): Coordinate => {
-  let x: number | undefined;
-  const y = maze.findIndex(row => {
-    x = row.findIndex(Cell.isStart);
-    return x !== -1;
-  });
+export const startingCell = (maze: Maze): Cell.Type => {
+  const cell = find(Cell.isStart, maze);
 
-  if (x === -1 || y === -1)
+  if (isNil(cell)) {
     throw new Error("Invalid maze! No starting cell found.");
+  }
 
-  return [x!, y];
+  return cell;
 };
 
 export type Type = Maze;
