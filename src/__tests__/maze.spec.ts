@@ -1,5 +1,3 @@
-import { pluck } from "ramda";
-
 import * as Cell from "../cell";
 import * as Maze from "../maze";
 
@@ -46,18 +44,6 @@ describe("maze", () => {
       const expected = Maze.cellAt([1, 1], maze!);
 
       expect(start).toEqual(expected);
-    });
-
-    it("finds neighbors of a cell", () => {
-      const cell = Maze.cellAt([2, 1], maze!);
-      const neighbors = Maze.neighbors(cell!, maze!);
-
-      expect(pluck("location", neighbors)).toEqual([
-        [1, 1],
-        [3, 1],
-        [2, 0],
-        [2, 2],
-      ]);
     });
 
     it("returns undefined for off-grid cell indexes", () => {

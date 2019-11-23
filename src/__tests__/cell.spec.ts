@@ -1,4 +1,7 @@
+import { pluck } from "ramda";
+
 import * as Cell from "../cell";
+import * as Maze from "../maze";
 
 describe("cell contents", () => {
   describe("creation", () => {
@@ -70,12 +73,36 @@ describe("cell contents", () => {
     });
   });
 
-  describe("neighbor locations", () => {
-    it("knows its neighbor locations", () => {
-      const cell = Cell.make(3, 4, Cell.Contents.Hall);
-      const locations = Cell.neighborLocations(cell);
+  describe("neighbors", () => {
+    const MAZE = `
+    #####
+    #A B#
+    #####
+    `;
 
-      expect(locations).toEqual([[2, 4], [4, 4], [3, 3], [3, 5]]);
+    let maze: Maze.Type | null = null;
+
+    beforeEach(() => {
+      maze = Maze.parse(MAZE);
+    });
+
+    it("finds all of its neighbors in a maze", () => {
+      const cell = Maze.cellAt([2, 1], maze!);
+      const neighbors = Cell.neighbors(maze!, cell!);
+
+      expect(pluck("location", neighbors)).toEqual([
+        [1, 1],
+        [3, 1],
+        [2, 0],
+        [2, 2],
+      ]);
+    });
+
+    it("finds all of its traversable neighbors in a maze", () => {
+      const cell = Maze.cellAt([2, 1], maze!);
+      const neighbors = Cell.traversableNeighbors(maze!, cell!);
+
+      expect(pluck("location", neighbors)).toEqual([[1, 1], [3, 1]]);
     });
   });
 });

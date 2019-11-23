@@ -1,6 +1,7 @@
 import { last } from "ramda";
 
 import * as Cell from "../cell";
+import * as Maze from "../maze";
 import * as Path from "../path";
 
 describe("path", () => {
@@ -56,6 +57,31 @@ describe("path", () => {
 
       expect(Path.currentCell(extended)).toBe(newCell);
       expect(extended).not.toBe(path!);
+    });
+
+    it("finds all not-yet-visited successor paths in a maze", () => {
+      describe("neighbors", () => {
+        const MAZE = `
+        #####
+        #A B#
+        #   #
+        #####
+        `;
+
+        const maze = Maze.parse(MAZE);
+
+        const startingCell = Maze.startingCell(maze);
+        const currentCell = Maze.cellAt([2, 1], maze);
+        const rightCell = Maze.cellAt([3, 1], maze);
+        const belowCell = Maze.cellAt([2, 2], maze);
+        const path = Path.make(startingCell, currentCell!);
+        const successors = Path.successors(maze, path);
+
+        expect(successors).toEqual([
+          [startingCell, currentCell, rightCell],
+          [startingCell, currentCell, belowCell],
+        ]);
+      });
     });
   });
 

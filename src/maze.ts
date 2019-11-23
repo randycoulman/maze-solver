@@ -4,15 +4,12 @@ import {
   flatten,
   isEmpty,
   isNil,
-  map,
   pipe,
   propEq,
   reject,
   split,
   trim,
-  __,
 } from "ramda";
-
 import * as Cell from "./cell";
 
 type Row = Array<Cell.Type>;
@@ -40,15 +37,6 @@ export const parse = (description: string): Maze => {
 export const cellAt = curry((location: Cell.Location, maze: Maze):
   | Cell.Type
   | undefined => find(propEq("location", location), maze));
-
-export const neighbors = curry(
-  (cell: Cell.Type, maze: Maze): Array<Cell.Type> =>
-    pipe(
-      Cell.neighborLocations,
-      map(cellAt(__, maze)),
-      reject(isNil)
-    )(cell) as Array<Cell.Type>
-);
 
 export const startingCell = (maze: Maze): Cell.Type => {
   const cell = find(Cell.isStart, maze);

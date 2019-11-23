@@ -7,11 +7,14 @@ import {
   isNil,
   last,
   length,
+  map,
   max,
   pipe,
   pluck,
+  reject,
 } from "ramda";
 import * as Cell from "./cell";
+import * as Maze from "./maze";
 
 type Path = Array<Cell.Type>;
 
@@ -33,6 +36,15 @@ export const stepCount: (path: Path) => number = pipe(
   dec,
   max(0 as number)
 );
+
+export const successors = (maze: Maze.Type, path: Path): Array<Path> =>
+  pipe(
+    currentCell,
+    (cell: Cell.Type): Array<Cell.Type> =>
+      Cell.traversableNeighbors(maze, cell),
+    reject(neighbor => hasVisited(neighbor, path)),
+    map(neighbor => visit(neighbor, path))
+  )(path);
 
 export const visit = append;
 

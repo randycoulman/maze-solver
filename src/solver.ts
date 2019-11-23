@@ -1,16 +1,4 @@
-import {
-  both,
-  complement,
-  concat,
-  filter,
-  head,
-  isEmpty,
-  map,
-  pipe,
-  tail,
-  __,
-} from "ramda";
-import * as Cell from "./cell";
+import { concat, head, isEmpty, pipe, tail, __ } from "ramda";
 import * as Maze from "./maze";
 import * as Path from "./path";
 
@@ -23,20 +11,9 @@ export const solution = (maze: Maze.Type): Path.Type => {
 
     if (Path.isComplete(path)) return path;
 
-    const alreadyVisited = (cell: Cell.Type): boolean =>
-      Path.hasVisited(cell, path);
-
-    const cell = Path.currentCell(path);
-    const neighbors = pipe(
-      Maze.neighbors(cell),
-      filter(both(Cell.isTraversable, complement(alreadyVisited)))
-    )(maze);
-
-    const nextPaths = map(n => Path.visit(n, path), neighbors);
-
     paths = pipe(
       tail,
-      concat(__, nextPaths)
+      concat(__, Path.successors(maze, path))
     )(paths);
   }
 
