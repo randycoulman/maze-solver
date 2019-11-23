@@ -1,12 +1,12 @@
 import {
   curry,
-  equals,
   find,
   flatten,
   isEmpty,
   isNil,
   map,
   pipe,
+  propEq,
   reject,
   split,
   trim,
@@ -37,15 +37,15 @@ export const parse = (description: string): Maze => {
   return flatten(rows);
 };
 
-export const cellAt = curry((x: number, y: number, maze: Maze):
+export const cellAt = curry((location: Cell.Location, maze: Maze):
   | Cell.Type
-  | undefined => find(cell => equals(cell.location, [x, y]), maze));
+  | undefined => find(propEq("location", location), maze));
 
 export const neighbors = curry(
   (cell: Cell.Type, maze: Maze): Array<Cell.Type> =>
     pipe(
       Cell.neighborLocations,
-      map(([x, y]) => cellAt(x, y, maze)),
+      map(cellAt(__, maze)),
       reject(isNil)
     )(cell) as Array<Cell.Type>
 );
