@@ -40,8 +40,7 @@ export const stepCount: (path: Path) => number = pipe(
 export const successors = (maze: Maze.Type, path: Path): Array<Path> =>
   pipe(
     currentCell,
-    (cell: Cell.Type): Array<Cell.Type> =>
-      Cell.traversableNeighbors(maze, cell),
+    Cell.traversableNeighbors(maze),
     reject(neighbor => hasVisited(neighbor, path)),
     map(neighbor => visit(neighbor, path))
   )(path);
